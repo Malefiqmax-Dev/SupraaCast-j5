@@ -29,7 +29,7 @@ export function MediaCard({
   return (
     <Link href={href} className="group flex-shrink-0">
       <div className="relative overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
-        <div className="aspect-[2/3] w-full">
+        <div className="relative aspect-[2/3] w-full">
           {imageUrl ? (
             <Image
               src={imageUrl || "/placeholder.svg"}
