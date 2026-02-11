@@ -1,4 +1,4 @@
-const TMDB_TOKEN = process.env.TMDB_API_TOKEN || ""
+const TMDB_TOKEN = process.env.TMDB_API_TOKEN || "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YTAxNWFmZjM3ZjM5ODY5NzM5ODk3YWUzZGNlZmU5MiIsIm5iZiI6MTc3MDg0MjcxNi45ODgsInN1YiI6IjY5OGNlYTVjNDFjOTYwZGNjZmIzMGYwOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rq0-m_bJcToSKDOJpaL0U0L3xfLfNut9zD5rCm2clak"
 const BASE_URL = "https://api.themoviedb.org/3"
 
 async function tmdbFetch(endpoint: string, params: Record<string, string> = {}) {
