@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   title: "SupraaCast - Streaming",
   description:
     "SupraaCast - Votre plateforme de streaming pour films et series.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 }
 
 export const viewport: Viewport = {
