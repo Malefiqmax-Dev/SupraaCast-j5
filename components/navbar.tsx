@@ -3,7 +3,7 @@
 import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Search, Menu, X, User, LogOut } from "lucide-react"
+import { Search, Menu, X, User, LogOut, Heart } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "@/components/auth-modal"
@@ -79,6 +79,15 @@ export function Navbar() {
               >
                 Series
               </Link>
+              {user && (
+                <Link
+                  href="/my-list"
+                  className="flex items-center gap-1 text-sm text-foreground/70 transition-colors hover:text-foreground"
+                >
+                  <Heart className="h-3.5 w-3.5" />
+                  Ma Liste
+                </Link>
+              )}
             </div>
           </div>
 
@@ -129,6 +138,14 @@ export function Navbar() {
                       <p className="text-xs text-muted-foreground">{user.email}</p>
                     </div>
                     <div className="p-1">
+                      <Link
+                        href="/my-list"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground transition-colors hover:bg-secondary"
+                      >
+                        <Heart className="h-4 w-4" />
+                        Ma Liste
+                      </Link>
                       <button
                         onClick={() => {
                           signOut()
@@ -187,6 +204,16 @@ export function Navbar() {
               >
                 Series
               </Link>
+              {user && (
+                <Link
+                  href="/my-list"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  <Heart className="h-4 w-4" />
+                  Ma Liste
+                </Link>
+              )}
               {!user && (
                 <button
                   onClick={() => { setMenuOpen(false); setAuthOpen(true) }}
