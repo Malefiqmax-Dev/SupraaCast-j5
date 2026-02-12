@@ -2,6 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Search, Menu, X, User, LogOut } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
@@ -56,9 +57,14 @@ export function Navbar() {
         <div className="mx-auto flex items-center justify-between px-4 py-3 lg:px-8">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <span className="font-display text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">
-                SupraaCast
-              </span>
+              <Image
+                src="/logo.png"
+                alt="SupraaCast"
+                width={160}
+                height={36}
+                className="h-8 w-auto"
+                priority
+              />
             </Link>
             <div className="hidden items-center gap-6 md:flex">
               <Link
