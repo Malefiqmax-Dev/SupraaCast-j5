@@ -1,9 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import { Play, Download, Star, Clock, Calendar } from "lucide-react"
+import { Play, Download, Star, Clock, Calendar, Heart, Eye } from "lucide-react"
 import { getBackdropUrl, getImageUrl } from "@/lib/tmdb"
 import { PlayerModal } from "@/components/player-modal"
+import { useAuth } from "@/lib/auth-context"
 import { useState } from "react"
 
 interface MovieDetailClientProps {
@@ -25,6 +26,7 @@ interface MovieDetailClientProps {
 
 export function MovieDetailClient({ movie }: MovieDetailClientProps) {
   const [playerMode, setPlayerMode] = useState<"watch" | "download" | null>(null)
+  const { user, toggleLike, toggleWatched, isLiked, isWatched } = useAuth()
 
   const backdropUrl = getBackdropUrl(movie.backdrop_path)
   const posterUrl = getImageUrl(movie.poster_path, "w500")
@@ -34,6 +36,17 @@ export function MovieDetailClient({ movie }: MovieDetailClientProps) {
 
   const watchUrl = `https://wwembed.wavewatch.xyz/api/v1/streaming/ww-movie-${movie.id}`
   const downloadUrl = `https://wwembed.wavewatch.xyz/api/v1/download/ww-movie-${movie.id}`
+
+  const liked = isLiked(movie.id, "movie")
+  const watched = isWatched(movie.id, "movie")
+
+  const mediaItem = {
+    id: movie.id,
+    type: "movie" as const,
+    title: movie.title,
+    poster_path: movie.poster_path,
+    vote_average: movie.vote_average,
+  }
 
   return (
     <>
@@ -120,6 +133,35 @@ export function MovieDetailClient({ movie }: MovieDetailClientProps) {
                   <Download className="h-5 w-5" />
                   Telecharger
                 </button>
+
+                {user && (
+                  <>
+                    <button
+                      onClick={() => toggleLike(mediaItem)}
+                      className={`flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-semibold transition-all ${
+                        liked
+                          ? "border-pink-500/60 bg-pink-950/40 text-pink-400 hover:bg-pink-950/60"
+                          : "border-violet-700/40 bg-violet-950/50 text-foreground hover:bg-violet-900/50"
+                      }`}
+                      aria-label={liked ? "Retirer des favoris" : "Ajouter aux favoris"}
+                    >
+                      <Heart className={`h-5 w-5 ${liked ? "fill-pink-400" : ""}`} />
+                      {liked ? "Aime" : "J'aime"}
+                    </button>
+                    <button
+                      onClick={() => toggleWatched(mediaItem)}
+                      className={`flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-semibold transition-all ${
+                        watched
+                          ? "border-emerald-500/60 bg-emerald-950/40 text-emerald-400 hover:bg-emerald-950/60"
+                          : "border-violet-700/40 bg-violet-950/50 text-foreground hover:bg-violet-900/50"
+                      }`}
+                      aria-label={watched ? "Retirer de la liste" : "Marquer comme vu"}
+                    >
+                      <Eye className={`h-5 w-5 ${watched ? "fill-emerald-400" : ""}`} />
+                      {watched ? "Vu" : "Marquer vu"}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
