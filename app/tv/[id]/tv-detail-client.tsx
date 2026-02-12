@@ -1,10 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { Play, Download, Star, Calendar, ChevronDown, Heart, Eye } from "lucide-react"
+import { Play, Download, Star, Calendar, ChevronDown } from "lucide-react"
 import { getBackdropUrl, getImageUrl } from "@/lib/tmdb"
 import { PlayerModal } from "@/components/player-modal"
-import { useAuth } from "@/lib/auth-context"
 import { useState } from "react"
 
 interface Episode {
@@ -52,7 +51,6 @@ export function TVDetailClient({ show, seasonDetails }: TVDetailClientProps) {
     title: string
   } | null>(null)
   const [seasonDropdownOpen, setSeasonDropdownOpen] = useState(false)
-  const { user, toggleLike, toggleWatched, isLiked, isWatched } = useAuth()
 
   const backdropUrl = getBackdropUrl(show.backdrop_path)
   const posterUrl = getImageUrl(show.poster_path, "w500")
@@ -60,17 +58,6 @@ export function TVDetailClient({ show, seasonDetails }: TVDetailClientProps) {
 
   const currentSeason = seasonDetails[selectedSeason]
   const episodes = currentSeason?.episodes || []
-
-  const liked = isLiked(show.id, "tv")
-  const watched = isWatched(show.id, "tv")
-
-  const mediaItem = {
-    id: show.id,
-    type: "tv" as const,
-    title: show.name,
-    poster_path: show.poster_path,
-    vote_average: show.vote_average,
-  }
 
   function getStreamUrl(season: number, episode: number) {
     return `https://wwembed.wavewatch.xyz/api/v1/streaming/ww-tv-${show.id}-s${season}-e${episode}`
@@ -144,35 +131,6 @@ export function TVDetailClient({ show, seasonDetails }: TVDetailClientProps) {
               <p className="mt-4 leading-relaxed text-foreground/80 text-sm lg:text-base">
                 {show.overview || "Aucune description disponible."}
               </p>
-
-              {user && (
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={() => toggleLike(mediaItem)}
-                    className={`flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-semibold transition-all ${
-                      liked
-                        ? "border-pink-500/60 bg-pink-950/40 text-pink-400 hover:bg-pink-950/60"
-                        : "border-violet-700/40 bg-violet-950/50 text-foreground hover:bg-violet-900/50"
-                    }`}
-                    aria-label={liked ? "Retirer des favoris" : "Ajouter aux favoris"}
-                  >
-                    <Heart className={`h-5 w-5 ${liked ? "fill-pink-400" : ""}`} />
-                    {liked ? "Aime" : "J'aime"}
-                  </button>
-                  <button
-                    onClick={() => toggleWatched(mediaItem)}
-                    className={`flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-semibold transition-all ${
-                      watched
-                        ? "border-emerald-500/60 bg-emerald-950/40 text-emerald-400 hover:bg-emerald-950/60"
-                        : "border-violet-700/40 bg-violet-950/50 text-foreground hover:bg-violet-900/50"
-                    }`}
-                    aria-label={watched ? "Retirer de la liste" : "Marquer comme vu"}
-                  >
-                    <Eye className={`h-5 w-5 ${watched ? "fill-emerald-400" : ""}`} />
-                    {watched ? "Vu" : "Marquer vu"}
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
