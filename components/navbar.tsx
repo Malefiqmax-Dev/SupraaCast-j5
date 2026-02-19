@@ -3,7 +3,7 @@
 import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Search, Menu, X, User, LogOut, Heart } from "lucide-react"
+import { Search, Menu, X, User, LogOut, Heart, Shield } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "@/components/auth-modal"
@@ -42,6 +42,11 @@ export function Navbar() {
       setSearchOpen(false)
       setSearchQuery("")
     }
+  }
+
+  async function handleSignOut() {
+    await signOut()
+    setDropdownOpen(false)
   }
 
   return (
@@ -86,6 +91,15 @@ export function Navbar() {
                 >
                   <Heart className="h-3.5 w-3.5" />
                   Ma Liste
+                </Link>
+              )}
+              {user?.isAdmin && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-1 text-sm text-violet-400 transition-colors hover:text-violet-300"
+                >
+                  <Shield className="h-3.5 w-3.5" />
+                  Admin
                 </Link>
               )}
             </div>
@@ -136,6 +150,11 @@ export function Navbar() {
                     <div className="border-b border-violet-800/20 px-4 py-3">
                       <p className="text-sm font-semibold text-foreground">{user.username}</p>
                       <p className="text-xs text-muted-foreground">{user.email}</p>
+                      {user.isAdmin && (
+                        <span className="mt-1 inline-block rounded-full bg-violet-600/20 px-2 py-0.5 text-[10px] font-semibold text-violet-400">
+                          Administrateur
+                        </span>
+                      )}
                     </div>
                     <div className="p-1">
                       <Link
@@ -146,11 +165,18 @@ export function Navbar() {
                         <Heart className="h-4 w-4" />
                         Ma Liste
                       </Link>
+                      {user.isAdmin && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-400 transition-colors hover:bg-secondary"
+                        >
+                          <Shield className="h-4 w-4" />
+                          Administration
+                        </Link>
+                      )}
                       <button
-                        onClick={() => {
-                          signOut()
-                          setDropdownOpen(false)
-                        }}
+                        onClick={handleSignOut}
                         className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-secondary"
                       >
                         <LogOut className="h-4 w-4" />
@@ -214,6 +240,16 @@ export function Navbar() {
                   Ma Liste
                 </Link>
               )}
+              {user?.isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-400 transition-colors hover:bg-secondary hover:text-violet-300"
+                >
+                  <Shield className="h-4 w-4" />
+                  Administration
+                </Link>
+              )}
               {!user && (
                 <button
                   onClick={() => { setMenuOpen(false); setAuthOpen(true) }}
@@ -224,7 +260,7 @@ export function Navbar() {
               )}
               {user && (
                 <button
-                  onClick={() => { signOut(); setMenuOpen(false) }}
+                  onClick={async () => { await signOut(); setMenuOpen(false) }}
                   className="mt-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-secondary"
                 >
                   <LogOut className="h-4 w-4" />
