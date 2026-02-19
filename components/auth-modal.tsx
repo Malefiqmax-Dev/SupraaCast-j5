@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { X, Eye, EyeOff } from "lucide-react"
+import { X, Eye, EyeOff, Loader2 } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 
 interface AuthModalProps {
@@ -16,6 +16,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [username, setUsername] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
   const { signIn, signUp } = useAuth()
 
   if (!isOpen) return null
@@ -26,9 +27,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     setUsername("")
     setError("")
     setShowPassword(false)
+    setLoading(false)
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError("")
 
@@ -51,22 +53,31 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       return
     }
 
-    if (mode === "signin") {
-      const result = signIn(email, password)
-      if (!result.success) {
-        setError(result.error || "Erreur de connexion.")
-        return
-      }
-    } else {
-      const result = signUp(username.trim(), email, password)
-      if (!result.success) {
-        setError(result.error || "Erreur lors de l'inscription.")
-        return
-      }
-    }
+    setLoading(true)
 
-    reset()
-    onClose()
+    try {
+      if (mode === "signin") {
+        const result = await signIn(email, password)
+        if (!result.success) {
+          setError(result.error || "Erreur de connexion.")
+          setLoading(false)
+          return
+        }
+      } else {
+        const result = await signUp(username.trim(), email, password)
+        if (!result.success) {
+          setError(result.error || "Erreur lors de l'inscription.")
+          setLoading(false)
+          return
+        }
+      }
+
+      reset()
+      onClose()
+    } catch {
+      setError("Une erreur est survenue. Veuillez reessayer.")
+      setLoading(false)
+    }
   }
 
   function switchMode() {
@@ -111,8 +122,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="SupraaFan42"
-                className="rounded-lg border border-violet-800/40 bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/50"
+                placeholder="Exemple"
+                disabled={loading}
+                className="rounded-lg border border-violet-800/40 bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/50 disabled:opacity-50"
               />
             </div>
           )}
@@ -127,7 +139,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vous@exemple.com"
-              className="rounded-lg border border-violet-800/40 bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/50"
+              disabled={loading}
+              className="rounded-lg border border-violet-800/40 bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/50 disabled:opacity-50"
             />
           </div>
 
@@ -142,7 +155,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="6 caracteres minimum"
-                className="w-full rounded-lg border border-violet-800/40 bg-secondary px-4 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/50"
+                disabled={loading}
+                className="w-full rounded-lg border border-violet-800/40 bg-secondary px-4 py-2.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/50 disabled:opacity-50"
               />
               <button
                 type="button"
@@ -157,8 +171,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
           <button
             type="submit"
-            className="mt-2 rounded-lg bg-gradient-to-r from-violet-600 to-purple-700 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:from-violet-500 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+            disabled={loading}
+            className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-purple-700 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:from-violet-500 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 disabled:opacity-50"
           >
+            {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             {mode === "signin" ? "Se connecter" : "Creer un compte"}
           </button>
         </form>
