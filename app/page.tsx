@@ -30,9 +30,7 @@ export default async function HomePage() {
       <div className="-mt-16 relative z-10">
         <MediaRow title="Tendances de la semaine" items={trending.results} />
         <MediaRow title="Films populaires" items={popularMovies.results} mediaType="movie" />
-        <div id="platforms">
-          <PlatformSection />
-        </div>
+        <PlatformSection />
         <MediaRow title="Films les mieux notes" items={topRatedMovies.results} mediaType="movie" />
         <MediaRow title="En salle actuellement" items={nowPlaying.results} mediaType="movie" />
         <MediaRow title="Series populaires" items={popularTV.results} mediaType="tv" />
