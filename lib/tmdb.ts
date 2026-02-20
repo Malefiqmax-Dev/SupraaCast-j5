@@ -79,3 +79,38 @@ export function getImageUrl(path: string | null, size = "w500") {
 export function getBackdropUrl(path: string | null) {
   return getImageUrl(path, "original")
 }
+
+// --- Streaming Provider Discovery ---
+
+export async function discoverMoviesByProvider(providerId: number, page = 1) {
+  return tmdbFetch("/discover/movie", {
+    with_watch_providers: String(providerId),
+    watch_region: "FR",
+    sort_by: "title.asc",
+    page: String(page),
+  })
+}
+
+export async function discoverTVByProvider(providerId: number, page = 1) {
+  return tmdbFetch("/discover/tv", {
+    with_watch_providers: String(providerId),
+    watch_region: "FR",
+    sort_by: "name.asc",
+    page: String(page),
+  })
+}
+
+export const STREAMING_PROVIDERS = [
+  { id: 8, name: "Netflix", slug: "netflix", color: "#E50914" },
+  { id: 337, name: "Disney+", slug: "disney-plus", color: "#113CCF" },
+  { id: 1899, name: "Max", slug: "max", color: "#002BE7" },
+  { id: 119, name: "Prime Video", slug: "prime-video", color: "#00A8E1" },
+  { id: 350, name: "Apple TV+", slug: "apple-tv-plus", color: "#000000" },
+  { id: 531, name: "Paramount+", slug: "paramount-plus", color: "#0064FF" },
+  { id: 381, name: "Canal+", slug: "canal-plus", color: "#1A1A1A" },
+  { id: 283, name: "Crunchyroll", slug: "crunchyroll", color: "#F47521" },
+] as const
+
+export function getProviderBySlug(slug: string) {
+  return STREAMING_PROVIDERS.find((p) => p.slug === slug)
+}

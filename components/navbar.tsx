@@ -3,7 +3,7 @@
 import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Search, Menu, X, User, LogOut, Heart, Shield } from "lucide-react"
+import { Search, Menu, X, User, LogOut, Heart, Shield, MonitorPlay } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "@/components/auth-modal"
@@ -83,6 +83,13 @@ export function Navbar() {
                 className="text-sm text-foreground/70 transition-colors hover:text-foreground"
               >
                 Series
+              </Link>
+              <Link
+                href="/#platforms"
+                className="flex items-center gap-1 text-sm text-foreground/70 transition-colors hover:text-foreground"
+              >
+                <MonitorPlay className="h-3.5 w-3.5" />
+                Plateformes
               </Link>
               {user && (
                 <Link
@@ -229,6 +236,14 @@ export function Navbar() {
                 className="rounded-lg px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
               >
                 Series
+              </Link>
+              <Link
+                href="/#platforms"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                <MonitorPlay className="h-4 w-4" />
+                Plateformes
               </Link>
               {user && (
                 <Link
