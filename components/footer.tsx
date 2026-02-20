@@ -20,7 +20,7 @@ export function Footer() {
           <Link href="/tv" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
             Series
           </Link>
-          <Link href="/#platforms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+          <Link href="/platforms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
             Plateformes
           </Link>
         </div>

@@ -85,7 +85,7 @@ export function Navbar() {
                 Series
               </Link>
               <Link
-                href="/#platforms"
+                href="/platforms"
                 className="flex items-center gap-1 text-sm text-foreground/70 transition-colors hover:text-foreground"
               >
                 <MonitorPlay className="h-3.5 w-3.5" />
@@ -238,7 +238,7 @@ export function Navbar() {
                 Series
               </Link>
               <Link
-                href="/#platforms"
+                href="/platforms"
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
               >

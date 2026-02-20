@@ -102,7 +102,7 @@ export function PlatformCatalog({
       {/* Header */}
       <div className="mb-8">
         <Link
-          href="/#platforms"
+          href="/platforms"
           className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -120,7 +120,7 @@ export function PlatformCatalog({
               {provider.name}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Films et series disponibles sur {provider.name} en France
+              Catalogue des films et series sur {provider.name}
             </p>
           </div>
         </div>

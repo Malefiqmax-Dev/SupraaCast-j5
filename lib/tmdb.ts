@@ -85,8 +85,7 @@ export function getBackdropUrl(path: string | null) {
 export async function discoverMoviesByProvider(providerId: number, page = 1) {
   return tmdbFetch("/discover/movie", {
     with_watch_providers: String(providerId),
-    watch_region: "FR",
-    sort_by: "title.asc",
+    sort_by: "popularity.desc",
     page: String(page),
   })
 }
@@ -94,8 +93,7 @@ export async function discoverMoviesByProvider(providerId: number, page = 1) {
 export async function discoverTVByProvider(providerId: number, page = 1) {
   return tmdbFetch("/discover/tv", {
     with_watch_providers: String(providerId),
-    watch_region: "FR",
-    sort_by: "name.asc",
+    sort_by: "popularity.desc",
     page: String(page),
   })
 }
