@@ -167,6 +167,16 @@ export function Navbar() {
                   Administration
                 </Link>
               )}
+              {user?.isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-400 transition-colors hover:bg-secondary hover:text-violet-300"
+                >
+                  <Shield className="h-4 w-4" />
+                  Administration
+                </Link>
+              )}
               {!user && (
                 <button onClick={() => { setMenuOpen(false); setAuthOpen(true) }} className="mt-2 rounded-lg bg-gradient-to-r from-violet-600 to-purple-700 px-3 py-2 text-sm font-semibold text-white">
                   Connexion / Inscription

@@ -48,6 +48,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(mapUser(supabaseUser, profile || undefined))
   }, [supabase])
 
+  const supabase = createClient()
+
+  const loadUserData = useCallback(async (supabaseUser: SupabaseUser) => {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", supabaseUser.id)
+      .single()
+
+    if (profile) {
+      setUser(buildUserFromProfile(profile, supabaseUser.email || ""))
+    }
+
+    // Load liked items
+    const { data: liked } = await supabase
+      .from("liked_items")
+      .select("*")
+      .eq("user_id", supabaseUser.id)
+      .order("created_at", { ascending: false })
+
+    if (liked) {
+      setLikedItems(
+        liked.map((item: Record<string, unknown>) => ({
+          id: item.media_id as number,
+          type: item.media_type as "movie" | "tv",
+          title: (item.title as string) || "",
+          poster_path: item.poster_path as string | null,
+          vote_average: 0,
+          addedAt: (item.created_at as string) || new Date().toISOString(),
+        }))
+      )
+    }
+
+    // Load watched items
+    const { data: watched } = await supabase
+      .from("watched_items")
+      .select("*")
+      .eq("user_id", supabaseUser.id)
+      .order("created_at", { ascending: false })
+
+    if (watched) {
+      setWatchedItems(
+        watched.map((item: Record<string, unknown>) => ({
+          id: item.media_id as number,
+          type: item.media_type as "movie" | "tv",
+          title: (item.title as string) || "",
+          poster_path: item.poster_path as string | null,
+          vote_average: 0,
+          addedAt: (item.created_at as string) || new Date().toISOString(),
+        }))
+      )
+    }
+  }, [supabase])
+
   useEffect(() => {
     async function init() {
       const { data: { user: supabaseUser } } = await supabase.auth.getUser()
