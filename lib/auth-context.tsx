@@ -36,29 +36,30 @@ function mapUser(supabaseUser: SupabaseUser, profile?: { username?: string; role
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AppUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
+  
+  const supabaseClient = createClient()
 
   const fetchProfile = useCallback(async (supabaseUser: SupabaseUser) => {
-    const { data: profile } = await supabase
+    const { data: profile } = await supabaseClient
       .from("profiles")
       .select("username, role")
       .eq("id", supabaseUser.id)
       .single()
 
     setUser(mapUser(supabaseUser, profile || undefined))
-  }, [supabase])
+  }, [supabaseClient])
 
   useEffect(() => {
     async function init() {
-      const { data: { user: supabaseUser } } = await supabase.auth.getUser()
-      if (supabaseUser) {
-        await fetchProfile(supabaseUser)
+      const { data: { user: currentUser } } = await supabaseClient.auth.getUser()
+      if (currentUser) {
+        await fetchProfile(currentUser)
       }
       setIsLoading(false)
     }
     init()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         await fetchProfile(session.user)
       } else {
@@ -67,10 +68,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase, fetchProfile])
+  }, [supabaseClient, fetchProfile])
 
   const signUp = useCallback(async (username: string, email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { error } = await supabaseClient.auth.signUp({
       email,
       password,
       options: {
@@ -85,20 +86,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { success: false, error: error.message }
     }
     return { success: true }
-  }, [supabase])
+  }, [supabaseClient])
 
   const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password })
     if (error) {
       return { success: false, error: "Email ou mot de passe incorrect." }
     }
     return { success: true }
-  }, [supabase])
+  }, [supabaseClient])
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut()
+    await supabaseClient.auth.signOut()
     setUser(null)
-  }, [supabase])
+  }, [supabaseClient])
 
   const isAdmin = user?.role === "admin"
 
