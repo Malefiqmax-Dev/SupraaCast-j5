@@ -50,6 +50,7 @@ export function Navbar() {
     { href: "/tv", label: "Series" },
     { href: "/platforms", label: "Platformes", icon: Tv },
     { href: "/live", label: "Live Sport", icon: Radio },
+    { href: "/live-tv", label: "Live TV", icon: Tv },
   ]
 
   return (

@@ -68,6 +68,30 @@ const CHANNELS: Channel[] = [
     url: "https://wwembed.wavewatch.xyz/api/v1/live/ww-live-3a38bf24-6572-4b1e-b43a-a4d57e9c72ca",
     category: "Canal+ Foot",
   },
+  {
+    name: "Ligue 1+",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAXmvzN2V-yeMq_euRSAwRw8TqU8FxViwyKnvYIO5TfA&s=10",
+    url: "https://wwembed.wavewatch.xyz/api/v1/live/ww-live-856188e8-0023-43e9-9f7d-401013949f6b",
+    category: "Ligue 1",
+  },
+  {
+    name: "DAZN 1",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4RY5nKbPf2m966GxRFzbW7aETkXP81OeKQ1T8DdyMCA&s=10",
+    url: "https://wwembed.wavewatch.xyz/api/v1/live/ww-live-3dad6add-83af-4284-ba1f-003093a525e9",
+    category: "DAZN",
+  },
+  {
+    name: "DAZN 2",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4RY5nKbPf2m966GxRFzbW7aETkXP81OeKQ1T8DdyMCA&s=10",
+    url: "https://wwembed.wavewatch.xyz/api/v1/live/ww-live-cee1c10a-8026-4755-b74c-1c67dc3618e9",
+    category: "DAZN",
+  },
+  {
+    name: "DAZN 3",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4RY5nKbPf2m966GxRFzbW7aETkXP81OeKQ1T8DdyMCA&s=10",
+    url: "https://wwembed.wavewatch.xyz/api/v1/live/ww-live-8efe8776-028b-450d-a228-bb959e4c18ba",
+    category: "DAZN",
+  },
 ]
 
 const CATEGORIES = ["Tous", ...Array.from(new Set(CHANNELS.map(c => c.category)))]
