@@ -3,7 +3,7 @@
 import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Search, Menu, X, User, LogOut, Shield, Tv, Radio } from "lucide-react"
+import { Search, Menu, X, User, LogOut, Shield, Tv } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { AuthModal } from "@/components/auth-modal"
@@ -48,8 +48,6 @@ export function Navbar() {
     { href: "/", label: "Accueil" },
     { href: "/movies", label: "Films" },
     { href: "/tv", label: "Series" },
-    { href: "/platforms", label: "Platformes", icon: Tv },
-    { href: "/live", label: "Live Sport", icon: Radio },
     { href: "/live-tv", label: "Live TV", icon: Tv },
   ]
 
