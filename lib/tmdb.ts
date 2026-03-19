@@ -71,6 +71,14 @@ export async function getTVGenres() {
   return tmdbFetch("/genre/tv/list")
 }
 
+export async function discoverByNetwork(networkId: number, page = 1) {
+  return tmdbFetch("/discover/tv", { with_networks: String(networkId), page: String(page), sort_by: "name.asc" })
+}
+
+export async function discoverMoviesByCompany(companyId: number, page = 1) {
+  return tmdbFetch("/discover/movie", { with_companies: String(companyId), page: String(page), sort_by: "title.asc" })
+}
+
 export function getImageUrl(path: string | null, size = "w500") {
   if (!path) return null
   return `https://image.tmdb.org/t/p/${size}${path}`
